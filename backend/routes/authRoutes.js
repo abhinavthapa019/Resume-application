@@ -1,0 +1,21 @@
+const express = require("express");
+
+const router = express.Router();
+
+const authController = require("../controllers/authController");
+
+// Register
+router.post("/register", authController.register);
+
+// Login
+router.post("/login", authController.login);
+
+
+router.get("/profile", authMiddleware, (req, res) => {
+  res.json({
+    message: "Profile accessed successfully",
+    user: req.user,
+  });
+});
+
+module.exports = router;
