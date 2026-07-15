@@ -18,12 +18,12 @@ async function register(userData) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Save user
-    const result = await authRepository.createUser({
+    const result = await authRepository.createUser(
         name,
         email,
-        password: hashedPassword,
+        hashedPassword,
         
-    });
+    );
 
     return result;
 }
