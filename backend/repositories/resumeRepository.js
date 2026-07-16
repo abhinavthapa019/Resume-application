@@ -53,9 +53,46 @@ const findByIdAndUserId = async (resumeId, userId) => {
     return rows[0];
 };
 
+
+const findDownloadInfoByIdAndUserId = async (resumeId, userId) => {
+    const [rows] = await db.query(
+        `
+        SELECT file_path, original_name
+        FROM resumes
+        WHERE id = ?
+        AND user_id = ?;
+        `,
+        [resumeId, userId]
+    );
+
+    return rows[0];
+};
+
+
+const deleteByIdAndUserId = async (resumeId, userId) => {
+
+    const [result] = await db.execute(
+        `
+        DELETE
+        FROM resumes
+        WHERE id = ?
+        AND user_id = ?;
+        `,
+        [
+            resumeId,
+            userId
+        ]
+    );
+
+    return result.affectedRows;
+};
+
+
 module.exports = {
     createResume,
     getUserResumes,
-    findByIdAndUserId
+    findByIdAndUserId,
+     findDownloadInfoByIdAndUserId,
+        deleteByIdAndUserId
 };
 

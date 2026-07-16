@@ -24,4 +24,16 @@ router.get(
     resumeController.getResumeById
 );
 
+router.get(
+    "/:id/download",
+    authMiddleware,
+    resumeController.downloadResume
+);
+
+router.delete(
+    "/:id",
+    authMiddleware,
+    resumeController.deleteResume
+);
+
 module.exports = router;
