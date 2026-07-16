@@ -7,6 +7,7 @@ const cors = require("cors");
 const pool=require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
@@ -14,9 +15,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
