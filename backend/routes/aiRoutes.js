@@ -5,4 +5,5 @@ const aiController = require("../controllers/aiController");
 
 router.get("/test", aiController.testConnection);
 
+
 module.exports = router;

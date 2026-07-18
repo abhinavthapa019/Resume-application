@@ -1,32 +1,43 @@
 const resumeRepository = require("../repositories/resumeRepository");
 const fs = require("fs/promises");
 const pdfParserClient = require("../clients/pdfParserClient");
+const aiService = require("./aiService");
 
-const uploadResume = async (resumeData) => {
-      const { filePath } = resumeData;
-    const text = await pdfParserClient.extractText(filePath);
-console.log(text);
-    return await resumeRepository.createResume(resumeData);
-};
 
 
 const getUserResumes = async (userId) => {
-    return await resumeRepository.getUserResumes(userId);
+    return resumeRepository.getUserResumes(userId);
 };
+
+
+const uploadResume = async (resumeData) => {
+    const { filePath } = resumeData;
+
+    // Extract text from PDF
+    const text = await pdfParserClient.extractText(filePath);
+
+    // Run AI analysis
+    const analysis = await aiService.analyzeResume(text);
+
+    // Save resume in DB
+    const createdResume = await resumeRepository.createResume(resumeData);
+
+    // Return both together
+    return {
+        createdResume,
+        analysis
+    };
+};
+
+
 
 
 const getResumeById = async (resumeId, userId) => {
-    return await resumeRepository.findByIdAndUserId(
-        resumeId,
-        userId
-    );
+    return resumeRepository.findByIdAndUserId(resumeId, userId);
 };
 
 const getDownloadInfo = async (resumeId, userId) => {
-    return await resumeRepository.findDownloadInfoByIdAndUserId(
-        resumeId,
-        userId
-    );
+    return resumeRepository.findDownloadInfoByIdAndUserId(resumeId, userId);
 };
 
 const deleteResume = async (resumeId, userId) => {
@@ -54,6 +65,6 @@ module.exports = {
     uploadResume,
     getUserResumes,
     getResumeById,
-       getDownloadInfo,
-        deleteResume
+    getDownloadInfo,
+    deleteResume
 };

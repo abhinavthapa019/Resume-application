@@ -5,28 +5,28 @@ const resumeService = require("../services/resumeService");
 const uploadResume = async (req, res) => {
     try {
         const userId = req.user.id;
-        // const file = req.file;
 
-        const resume = await resumeService.uploadResume({
-    userId,
-    originalName: req.file.originalname,
-    filePath: req.file.path,
-    fileSize: req.file.size,
-    mimeType: req.file.mimetype,
-}
-);
+        const resumeData = {
+            userId,
+            originalName: req.file.originalname,
+            filePath: req.file.path,
+            fileSize: req.file.size,
+            mimeType: req.file.mimetype,
+        };
+
+        // Call service
+        const { createdResume, analysis } = await resumeService.uploadResume(resumeData);
 
         res.status(201).json({
             message: "Resume uploaded successfully",
-            resume,
+            resume: createdResume,
+            analysis
         });
-
     } catch (error) {
-        res.status(500).json({
-            message: error.message,
-        });
+        res.status(500).json({ message: error.message });
     }
 };
+
 
 const getUserResumes = async (req, res) => {
     try {
@@ -90,8 +90,8 @@ const downloadResume = async (req, res) => {
         }
 
         res.download(
-            downloadInfo.filePath,
-            downloadInfo.originalName
+            downloadInfo.file_path,
+            downloadInfo.original_name
         );
 
     } catch (error) {
