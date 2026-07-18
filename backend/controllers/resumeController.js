@@ -5,7 +5,7 @@ const resumeService = require("../services/resumeService");
 const uploadResume = async (req, res) => {
     try {
         const userId = req.user.id;
-        const file = req.file;
+        // const file = req.file;
 
         const resume = await resumeService.uploadResume({
     userId,

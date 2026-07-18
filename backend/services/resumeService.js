@@ -1,7 +1,11 @@
 const resumeRepository = require("../repositories/resumeRepository");
 const fs = require("fs/promises");
+const pdfParserClient = require("../clients/pdfParserClient");
 
 const uploadResume = async (resumeData) => {
+      const { filePath } = resumeData;
+    const text = await pdfParserClient.extractText(filePath);
+console.log(text);
     return await resumeRepository.createResume(resumeData);
 };
 
