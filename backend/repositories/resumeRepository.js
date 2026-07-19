@@ -88,11 +88,14 @@ const deleteByIdAndUserId = async (resumeId, userId) => {
 };
 
 
+
+
 module.exports = {
     createResume,
     getUserResumes,
     findByIdAndUserId,
      findDownloadInfoByIdAndUserId,
-        deleteByIdAndUserId
+        deleteByIdAndUserId,
+       
 };
 

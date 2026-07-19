@@ -36,4 +36,10 @@ router.delete(
     resumeController.deleteResume
 );
 
+
+router.get(
+    "/:id/analysis",
+    authMiddleware,
+    resumeController.getResumeAnalysis
+);
 module.exports = router;

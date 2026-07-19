@@ -2,6 +2,8 @@ const resumeRepository = require("../repositories/resumeRepository");
 const fs = require("fs/promises");
 const pdfParserClient = require("../clients/pdfParserClient");
 const aiService = require("./aiService");
+const resumeAnalysisRepository = require("../repositories/resumeAnalysisRepository");
+
 
 
 
@@ -21,6 +23,13 @@ const uploadResume = async (resumeData) => {
 
     // Save resume in DB
     const createdResume = await resumeRepository.createResume(resumeData);
+
+    await resumeAnalysisRepository.createAnalysis({
+    resumeId: createdResume.insertId,
+    ...analysis,
+    modelName: process.env.GEMINI_MODEL,
+    promptVersion: 1
+});
 
     // Return both together
     return {
@@ -61,10 +70,25 @@ const deleteResume = async (resumeId, userId) => {
     return result;
 };
 
+
+const getResumeAnalysis = async (resumeId, userId) => {
+    const resume = await resumeRepository.findByIdAndUserId(
+        resumeId,
+        userId
+    );
+
+    if (!resume) {
+        return null;
+    }
+
+    return await resumeAnalysisRepository.findByResumeId(resumeId);
+};
+
 module.exports = {
     uploadResume,
     getUserResumes,
     getResumeById,
     getDownloadInfo,
-    deleteResume
+    deleteResume,
+    getResumeAnalysis
 };

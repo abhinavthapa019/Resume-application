@@ -42,7 +42,9 @@ Resume;
 ${resumeText}
 `;
 
-    return await geminiClient.analyzeResume(prompt);
+    const response = await geminiClient.analyzeResume(prompt);
+
+    return JSON.parse(response);
 };
 
 module.exports = {
