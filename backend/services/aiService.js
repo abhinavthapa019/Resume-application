@@ -44,7 +44,14 @@ ${resumeText}
 
     const response = await geminiClient.analyzeResume(prompt);
 
-    return JSON.parse(response);
+    const cleaned = response
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+return JSON.parse(cleaned);
+
+    
 };
 
 

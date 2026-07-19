@@ -11,6 +11,13 @@ const generateInterview = async (
             difficulty
         );
 
+
+            const questions = quiz.questions.map(question => ({
+        question: question.question,
+        options: question.options,
+        category: question.category,
+        difficulty
+    }));
     return questions;
 };
 
