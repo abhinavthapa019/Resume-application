@@ -11,6 +11,9 @@ const generateInterview = async (req, res) => {
         );
 
         res.status(200).json({
+             stack,
+    difficulty,
+    totalQuestions: questions.length,
             questions,
         });
 
