@@ -9,6 +9,8 @@ const pool=require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const interviewRoutes = require("./routes/interviewRoutes");
+
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/interviews", interviewRoutes);
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;

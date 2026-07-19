@@ -47,7 +47,58 @@ ${resumeText}
     return JSON.parse(response);
 };
 
+
+const generateInterviewQuiz = async (
+    stack,
+    difficulty
+) => {
+
+    const prompt = `
+You are an expert technical interviewer.
+
+Generate EXACTLY 10 multiple choice questions.
+
+Stack: ${stack}
+
+Difficulty: ${difficulty}
+
+Return ONLY valid JSON.
+
+Schema:
+
+{
+  "questions": [
+    {
+      "question": "string",
+      "options": [
+        "string",
+        "string",
+        "string",
+        "string"
+      ],
+      "correctAnswer": 0,
+      "explanation": "string",
+      "category": "string"
+    }
+  ]
+}
+
+Rules:
+
+- Exactly 10 questions.
+- Exactly 4 options.
+- correctAnswer must be 0,1,2 or 3.
+- explanation should be concise.
+- category should match the topic.
+- Return only JSON.
+`;
+
+    return await geminiClient.generate(prompt);
+
+};
+
 module.exports = {
     testConnection,
     analyzeResume,
+    generateInterviewQuiz 
 };

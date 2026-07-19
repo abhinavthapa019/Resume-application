@@ -61,7 +61,18 @@ const findByResumeId = async (resumeId) => {
         [resumeId]
     );
 
-    return rows[0];
+      const analysis = rows[0];
+
+    if (!analysis) {
+        return null;
+    }
+
+    analysis.strengths = JSON.parse(analysis.strengths);
+    analysis.weaknesses = JSON.parse(analysis.weaknesses);
+    analysis.missing_keywords = JSON.parse(analysis.missing_keywords);
+    analysis.suggestions = JSON.parse(analysis.suggestions);
+
+    return analysis;
 };
 
 module.exports = {

@@ -24,7 +24,17 @@ const analyzeResume = async (prompt) => {
     return response.text;
 };
 
+
+const generate = async (prompt) => {
+    const response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: prompt,
+    });
+
+    return response.text;
+};
 module.exports = {
     testConnection,
     analyzeResume,
+    generate
 };
