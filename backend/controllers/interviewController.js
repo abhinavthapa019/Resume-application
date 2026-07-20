@@ -5,15 +5,20 @@ const generateInterview = async (req, res) => {
 
         const { stack, difficulty } = req.body;
 
-        const questions = await interviewService.generateInterview(
-            stack,
-            difficulty
-        );
+        const userId = req.user.id;
+
+        const { quizId, questions } =
+            await interviewService.generateInterview(
+                userId,
+                stack,
+                difficulty
+            );
 
         res.status(200).json({
-             stack,
-    difficulty,
-    totalQuestions: questions.length,
+            quizId,
+            stack,
+            difficulty,
+            totalQuestions: questions.length,
             questions,
         });
 
@@ -26,6 +31,33 @@ const generateInterview = async (req, res) => {
     }
 };
 
+const submitInterview = async (req, res) => {
+
+    try {
+
+        const { quizId, answers } = req.body;
+
+        const userId = req.user.id;
+
+        const result = await interviewService.submitInterview(
+            userId,
+            quizId,
+            answers
+        );
+
+        res.status(200).json(result);
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
+
 module.exports = {
     generateInterview,
+    submitInterview
 };

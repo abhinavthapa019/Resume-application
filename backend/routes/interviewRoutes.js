@@ -10,4 +10,11 @@ router.post(
     interviewController.generateInterview
 );
 
+
+router.post(
+    "/submit",
+    authMiddleware,
+    interviewController.submitInterview
+);
+
 module.exports = router;

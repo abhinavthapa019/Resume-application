@@ -29,6 +29,24 @@ const createQuiz = async ({
     return result;
 };
 
+
+const getQuizById = async (quizId) => {
+
+    const [rows] = await db.execute(
+        `
+        SELECT *
+        FROM interview_quizzes
+        WHERE id = ?
+        `,
+        [quizId]
+    );
+
+    return rows[0];
+};
+
 module.exports = {
     createQuiz,
+    getQuizById,
 };
+
+
