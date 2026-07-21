@@ -44,6 +44,21 @@ const getQuizById = async (quizId) => {
     return rows[0];
 };
 
+const deleteQuiz = async (quizId) => {
+
+    const [result] = await db.execute(
+        `
+        DELETE
+        FROM interview_quizzes
+        WHERE id = ?
+        `,
+        [quizId]
+    );
+
+    return result;
+
+};
+
 module.exports = {
     createQuiz,
     getQuizById,

@@ -82,7 +82,65 @@ const submitInterview = async (
 
 };
 
+const saveInterview = async (
+    userId,
+    quizId
+) => {
+
+    const quiz =
+        await interviewRepository.getQuizById(quizId);
+
+    if (!quiz) {
+        throw new Error("Quiz not found");
+    }
+
+    if (quiz.user_id !== userId) {
+        throw new Error("Unauthorized access");
+    }
+
+    await interviewRepository.saveQuiz(quizId);
+
+};
+
+
+const deleteInterview = async (
+    userId,
+    quizId
+) => {
+
+    const quiz =
+        await interviewRepository.getQuizById(quizId);
+
+    if (!quiz) {
+        throw new Error("Quiz not found");
+    }
+
+    if (quiz.user_id !== userId) {
+        throw new Error("Unauthorized access");
+    }
+
+    await interviewRepository.deleteQuiz(quizId);
+
+};
+
+
+const getInterviewHistory = async (userId) => {
+
+    const history =
+        await interviewResultRepository.getInterviewHistory(userId);
+
+    return history;
+
+};
+
+
+
+
+
 module.exports = {
     generateInterview,
     submitInterview,
+      saveInterview,
+      deleteInterview,
+      getInterviewHistory
 };

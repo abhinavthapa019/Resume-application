@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
+const dashboardRoutes=require("./routes/dashboardRoutes")
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/interviews", interviewRoutes);
+app.use("/api/dashboard",dashboardRoutes);
 
 
 // Start Server

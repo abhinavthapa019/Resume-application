@@ -57,7 +57,86 @@ const submitInterview = async (req, res) => {
     }
 };
 
+const saveInterview = async (req, res) => {
+
+    try {
+
+        const quizId = req.params.id;
+        const userId = req.user.id;
+
+        await interviewService.saveInterview(
+            userId,
+            quizId
+        );
+
+        res.status(200).json({
+            message: "Interview saved successfully."
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
+
+const deleteInterview = async (req, res) => {
+
+    try {
+
+        const quizId = req.params.id;
+        const userId = req.user.id;
+
+        await interviewService.deleteInterview(
+            userId,
+            quizId
+        );
+
+        res.status(200).json({
+            message: "Interview deleted successfully."
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
+
+
+const getInterviewHistory = async (req, res) => {
+
+    try {
+
+        const userId = req.user.id;
+
+        const history =
+            await interviewService.getInterviewHistory(userId);
+
+        res.status(200).json({
+            totalInterviews: history.length,
+            history,
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message,
+        });
+
+    }
+
+};
 module.exports = {
     generateInterview,
     submitInterview,
+    saveInterview,
+    deleteInterview,
+        getInterviewHistory,
 };
