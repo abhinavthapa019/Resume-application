@@ -1,5 +1,6 @@
 const aiService = require("./aiService");
 const interviewRepository = require("../repositories/interviewRepository");
+const interviewResultRepository = require("../repositories/interviewResultRepository");
 
 const generateInterview = async (
     userId,
@@ -7,13 +8,11 @@ const generateInterview = async (
     difficulty
 ) => {
 
-    // Generate complete quiz from Gemini
     const quiz = await aiService.generateInterviewQuiz(
         stack,
         difficulty
     );
 
-    // Save complete quiz (includes correctAnswer & explanation)
     const result = await interviewRepository.createQuiz({
         userId,
         stack,
@@ -21,7 +20,6 @@ const generateInterview = async (
         questions: quiz.questions,
     });
 
-    // Remove sensitive fields before sending to frontend
     const questions = quiz.questions.map(question => ({
         question: question.question,
         options: question.options,
@@ -41,46 +39,47 @@ const submitInterview = async (
     answers
 ) => {
 
-    // Load quiz from database
-    const quiz = await interviewRepository.getQuizById(quizId);
+    const quiz =
+        await interviewRepository.getQuizById(quizId);
 
-    // Check quiz exists
     if (!quiz) {
         throw new Error("Quiz not found");
     }
 
-    // Check ownership
     if (quiz.user_id !== userId) {
         throw new Error("Unauthorized access");
     }
 
-    // Parse stored questions JSON
     const questions = JSON.parse(quiz.questions);
-
-    // Validate answer count
-    if (answers.length !== questions.length) {
-        throw new Error("Invalid number of answers submitted");
-    }
 
     let score = 0;
 
-    // Compare answers
     for (let i = 0; i < questions.length; i++) {
+
         if (answers[i] === questions[i].correctAnswer) {
             score++;
         }
+
     }
 
     const totalQuestions = questions.length;
-    const percentage = Number(
-        ((score / totalQuestions) * 100).toFixed(2)
-    );
+
+    const percentage =
+        Number(((score / totalQuestions) * 100).toFixed(2));
+
+    await interviewResultRepository.createResult({
+        quizId,
+        answers,
+        score,
+        percentage,
+    });
 
     return {
         score,
         totalQuestions,
         percentage,
     };
+
 };
 
 module.exports = {

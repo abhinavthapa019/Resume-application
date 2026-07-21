@@ -4,7 +4,6 @@ const generateInterview = async (req, res) => {
     try {
 
         const { stack, difficulty } = req.body;
-
         const userId = req.user.id;
 
         const { quizId, questions } =
@@ -32,20 +31,22 @@ const generateInterview = async (req, res) => {
 };
 
 const submitInterview = async (req, res) => {
-
     try {
 
         const { quizId, answers } = req.body;
-
         const userId = req.user.id;
 
-        const result = await interviewService.submitInterview(
-            userId,
-            quizId,
-            answers
-        );
+        const result =
+            await interviewService.submitInterview(
+                userId,
+                quizId,
+                answers
+            );
 
-        res.status(200).json(result);
+        res.status(200).json({
+            message: "Interview submitted successfully.",
+            ...result,
+        });
 
     } catch (error) {
 
@@ -54,10 +55,9 @@ const submitInterview = async (req, res) => {
         });
 
     }
-
 };
 
 module.exports = {
     generateInterview,
-    submitInterview
+    submitInterview,
 };
