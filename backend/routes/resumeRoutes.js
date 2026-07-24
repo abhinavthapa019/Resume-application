@@ -4,6 +4,7 @@ const router = express.Router();
 const resumeController = require("../controllers/resumeController");
 const authMiddleware = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
+const rolemiddleware=require("../middleware/roleMiddleware")
 
 router.post(
     "/",
@@ -33,6 +34,7 @@ router.get(
 router.delete(
     "/:id",
     authMiddleware,
+    rolemiddleware,
     resumeController.deleteResume
 );
 

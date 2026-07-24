@@ -27,7 +27,6 @@ async function register(userData) {
 
     return result;
 }
-
 // Login
 async function login(userData) {
     const { email, password } = userData;
@@ -58,9 +57,17 @@ async function login(userData) {
         }
     );
 
+    // Safe user object
+    const safeUser = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+    };
+
     return {
         token,
-        user,
+        user: safeUser,
     };
 }
 
