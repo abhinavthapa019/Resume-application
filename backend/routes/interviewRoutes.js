@@ -4,11 +4,13 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const interviewController = require("../controllers/interviewController");
 const {generateInterviewSchema,submitInterviewSchema}=require("../validator/interviewValidator")
+const validate=require("../middleware/validate")
 
 
 router.post(
     "/generate",
     authMiddleware,
+       validate(generateInterviewSchema),
     interviewController.generateInterview
 );
 
@@ -16,14 +18,13 @@ router.post(
 router.post(
     "/submit",
     authMiddleware,
-      validate(generateInterviewSchema),
+       validate(submitInterviewSchema),
     interviewController.submitInterview
 );
 
 router.patch(
     "/save/:id",
     authMiddleware,
-      validate(submitInterviewSchema),
     interviewController.saveInterview
 );
 

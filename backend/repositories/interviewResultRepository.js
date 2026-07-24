@@ -1,4 +1,5 @@
-const db = require("../config/db");
+
+const db = require("../config/database");
 
 const createResult = async ({
     quizId,
@@ -44,7 +45,6 @@ const saveQuiz = async (quizId) => {
 
 };
 
-const db = require("../config/db");
 
 const getInterviewHistory = async (userId) => {
 
